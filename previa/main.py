@@ -19,5 +19,5 @@ def list_courses(semester: int | None = Query(default=None, ge=1)):
     return [
         course
         for course in COURSES
-        if course.semester == semester
+        if course.semester != semester
     ]
