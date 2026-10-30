@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Query
 
 from previa.catalog import COURSES
