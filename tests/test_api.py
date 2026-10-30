@@ -25,3 +25,29 @@ def test_catalog():
 
 def test_unknown_route():
     assert client.get("/does-not-exist").status_code == 404
+
+def test_filter_semester_one():
+    response = client.get("/public/courses?semester=1")
+
+    assert response.status_code == 200
+
+    courses = response.json()
+
+    assert {course["code"] for course in courses} == {
+        "MAT101",
+        "PROG101",
+    }
+    assert all(course["semester"] == 1 for course in courses)
+
+
+def test_filter_semester_without_courses():
+    response = client.get("/public/courses?semester=8")
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_reject_invalid_semester():
+    response = client.get("/public/courses?semester=0")
+
+    assert response.status_code == 422
